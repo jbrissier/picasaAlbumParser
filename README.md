@@ -1,5 +1,5 @@
-picasAlbumParse
-===============
+picasaAlbumParser
+=================
 
 **Sill in development**
 
