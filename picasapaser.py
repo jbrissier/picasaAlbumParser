@@ -32,7 +32,7 @@ def copyAlbum(inputXml):
 
     #print albumName
     global outputdir
-    outputdir = outputdir+albumName.replace(' ',"_");
+    outputdir = outputdir+'/'+albumName.replace(' ',"_");
     #os.rmdir(outputdir)
    # os.mkdir(outputdir)
 
@@ -40,7 +40,7 @@ def copyAlbum(inputXml):
 
     for filename in picasaFiles.getElementsByTagName('filename'):
         org =  unicode(str(filename.childNodes[0].nodeValue),'UTF-8')
-        bild = unicode(org.replace("[G]",inputdir).replace("\\","/"));
+        bild = unicode(org.replace("[G]",inputdir+'/').replace("\\","/"));
         print bild;
         basename = os.path.basename(bild)
         systemcall = 'cp "%s" "%s"' % (bild,outputdir+'/'+basename)
