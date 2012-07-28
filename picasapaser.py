@@ -8,8 +8,8 @@ xmlpath = '.'
 #xml imput
 #inputXml = 'test.xml';
 
-inputdir = "/Volumens/foo"
-outputdir = "/Users/jochen/Desktop/"
+inputdir = "/mnt/usb"
+outputdir = "/home/jochen/urselfix/albums"
 disk = "[G]"
 
 def copyAlbum(inputXml):
@@ -40,10 +40,10 @@ def copyAlbum(inputXml):
 
     for filename in picasaFiles.getElementsByTagName('filename'):
         org =  filename.childNodes[0].nodeValue
-        bild = org.replace("[G]",inputdir).replace("\\","/") 
+        bild = org.replace("[G]",inputdir).replace("\\","/");
         print bild;
         basename = os.path.basename(bild)
-        systemcall = 'cp %s %s' % (bild,outputdir+'/'+basename)
+        systemcall = 'cp "%s" "%s"' % (bild,outputdir+'/'+basename)
         print systemcall
         os.system(systemcall)
         #shutil.copyfile(bild, )
@@ -51,7 +51,7 @@ def copyAlbum(inputXml):
 
 
 for xml in os.listdir(xmlpath):
-    if(re.match(".*\.xml",xml)):
+    if(re.match(".*\.PAL",xml)):
         copyAlbum(xml)        
 
 
