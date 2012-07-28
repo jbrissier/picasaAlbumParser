@@ -12,6 +12,11 @@ inputdir = "/mnt/usb"
 outputdir = "/home/jochen/urselfix/albums"
 disk = "[G]"
 
+def removeUnicode(input):
+    unicodedata.normalize('NFKD', input).encode('ascii','ignore')
+
+
+
 def copyAlbum(inputXml):
     #read file
     f = open(inputXml,'r')
@@ -28,7 +33,7 @@ def copyAlbum(inputXml):
     for prop in dom.getElementsByTagName('property'):
          if prop.getAttribute('name') == 'name':
             albumName = unicode(prop.getAttribute('value'))
-            albumName= unicodedata.normalize('NFKD', albumName).encode('ascii','ignore')
+            albumName=removeUnicode(albumName)
 
     #print albumName
     global outputdir
@@ -39,8 +44,8 @@ def copyAlbum(inputXml):
     picasaFiles = dom.getElementsByTagName('files')[0]
 
     for filename in picasaFiles.getElementsByTagName('filename'):
-        org =  unicode(str(filename.childNodes[0].nodeValue),'UTF-8')
-        bild = unicode(org.replace("[G]",inputdir+'/').replace("\\","/"));
+        org =  removeUnicode(str(filename.childNodes[0].nodeValue),'UTF-8')
+        bild = removeUnicode(org.replace("[G]",inputdir+'/').replace("\\","/"));
         print bild;
         basename = os.path.basename(bild)
         systemcall = 'cp "%s" "%s"' % (bild,outputdir+'/'+basename)
