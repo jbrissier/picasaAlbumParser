@@ -34,12 +34,12 @@ def copyAlbum(inputXml):
     global outputdir
     outputdir = outputdir+albumName.replace(' ',"_");
     #os.rmdir(outputdir)
-    os.mkdir(outputdir)
+   # os.mkdir(outputdir)
 
     picasaFiles = dom.getElementsByTagName('files')[0]
 
     for filename in picasaFiles.getElementsByTagName('filename'):
-        org =  filename.childNodes[0].nodeValue
+        org =  unicode(str(filename.childNodes[0].nodeValue),'UTF-8')
         bild = org.replace("[G]",inputdir).replace("\\","/");
         print bild;
         basename = os.path.basename(bild)
@@ -51,8 +51,9 @@ def copyAlbum(inputXml):
 
 
 for xml in os.listdir(xmlpath):
-    if(re.match(".*\.PAL",xml)):
-        copyAlbum(xml)        
+    if(re.match(".*\.pal",xml)):
+        print xml
+	copyAlbum(xmlpath+'/'+xml)        
 
 
 
