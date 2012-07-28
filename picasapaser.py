@@ -13,7 +13,7 @@ outputdir = "/home/jochen/urselfix/albums"
 disk = "[G]"
 
 def removeUnicode(input):
-    unicodedata.normalize('NFKD', input).encode('ascii','ignore')
+    return str(unicodedata.normalize('NFKD', input).encode('ascii','ignore'))
 
 
 
