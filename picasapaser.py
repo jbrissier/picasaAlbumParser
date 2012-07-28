@@ -2,7 +2,7 @@ from xml.dom.minidom import parseString
 import os
 import re
 import shutil
-
+import unicodedata
 xmlpath = '.'
 
 #xml imput
@@ -27,10 +27,10 @@ def copyAlbum(inputXml):
     # find album name
     for prop in dom.getElementsByTagName('property'):
          if prop.getAttribute('name') == 'name':
-            albumName = prop.getAttribute('value')
+            albumName = unicode(prop.getAttribute('value'))
+            albumName= unicodedata.normalize('NFKD', albumName).encode('ascii','ignore')
 
-
-    print albumName;
+    #print albumName
     global outputdir
     outputdir = outputdir+albumName.replace(' ',"_");
     #os.rmdir(outputdir)
