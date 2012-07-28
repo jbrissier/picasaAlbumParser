@@ -1,43 +1,59 @@
 from xml.dom.minidom import parseString
 import os
+import re
 import shutil
 
+xmlpath = '.'
 
 #xml imput
-inputXml = 'test.xml';
+#inputXml = 'test.xml';
 
-
+inputdir = "/Volumens/foo"
 outputdir = "/Users/jochen/Desktop/"
+disk = "[G]"
 
-#read file
-f = open(inputXml,'r')
+def copyAlbum(inputXml):
+    #read file
+    f = open(inputXml,'r')
 
-data = f.read()
+    data = f.read()
 
-#print data
-albumName =""
+    #print data
+    albumName =""
 
-#pares String
-dom = parseString(data)
+    #pares String
+    dom = parseString(data)
 
-# find album name
-for prop in dom.getElementsByTagName('property'):
-     if prop.getAttribute('name') == 'name':
-        albumName = prop.getAttribute('value')
+    # find album name
+    for prop in dom.getElementsByTagName('property'):
+         if prop.getAttribute('name') == 'name':
+            albumName = prop.getAttribute('value')
 
 
-print albumName;
+    print albumName;
+    global outputdir
+    outputdir = outputdir+albumName.replace(' ',"_");
+    #os.rmdir(outputdir)
+    os.mkdir(outputdir)
 
-outputdir = outputdir+albumName;
+    picasaFiles = dom.getElementsByTagName('files')[0]
 
-os.mkdir(outputdir)
+    for filename in picasaFiles.getElementsByTagName('filename'):
+        org =  filename.childNodes[0].nodeValue
+        bild = org.replace("[G]",inputdir).replace("\\","/") 
+        print bild;
+        basename = os.path.basename(bild)
+        systemcall = 'cp %s %s' % (bild,outputdir+'/'+basename)
+        print systemcall
+        os.system(systemcall)
+        #shutil.copyfile(bild, )
 
-picasaFiles = dom.getElementsByTagName('files')[0]
 
-for filename in picasaFiles.getElementsByTagName('filename'):
-    org =  filename.childNodes[0].nodeValue
-    bild = org.replace("[G]","/Volumens/foo").replace("\\","/") 
-    print bild;
-    #shutil.copyfile(bild, )
+
+for xml in os.listdir(xmlpath):
+    if(re.match(".*\.xml",xml)):
+        copyAlbum(xml)        
+
+
 
 
