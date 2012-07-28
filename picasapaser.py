@@ -13,7 +13,7 @@ outputdir = "/home/jochen/urselfix/albums"
 disk = "[G]"
 
 def removeUnicode(input):
-    return str(unicodedata.normalize('NFKD', input).encode('ascii','ignore'))
+    return str(unicodedata.normalize('NFKD', unicode(input)).encode('ascii','ignore'))
 
 
 
@@ -44,7 +44,7 @@ def copyAlbum(inputXml):
     picasaFiles = dom.getElementsByTagName('files')[0]
 
     for filename in picasaFiles.getElementsByTagName('filename'):
-        org =  removeUnicode(str(filename.childNodes[0].nodeValue),'UTF-8')
+        org =  removeUnicode(str(filename.childNodes[0].nodeValue))
         bild = removeUnicode(org.replace("[G]",inputdir+'/').replace("\\","/"));
         print bild;
         basename = os.path.basename(bild)
